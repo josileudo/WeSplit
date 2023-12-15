@@ -12,6 +12,21 @@ struct ContentView: View {
     @State private var numberOfPeople = 2
     @State private var tipPercent = 20
     
+    @FocusState private var amountIsFocused: Bool
+    
+    let tipPercentages = [5, 10, 15, 20, 0]
+    
+    func totalPerPerson() -> Double {
+        let peopleCount = Double(numberOfPeople + 2)
+        let tipSelection = Double(tipPercent)
+        
+        let tipValue = checkAmount / 100 * tipSelection
+        let grandTotal = checkAmount + tipValue
+        let amountPerPerson = grandTotal / peopleCount
+        
+        return amountPerPerson
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -19,23 +34,41 @@ struct ContentView: View {
                     TextField(
                         "Check amount: ",
                         value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD")
-                        
                     )
                     .keyboardType(.decimalPad)
+                    .focused($amountIsFocused)
                     
                     Picker("Number of peoples", selection: $numberOfPeople) {
                         ForEach(2..<100) {
-                            Text("\($0)")
+                            Text("\($0) Peoples")
                         }
                     }
                 }
                 
+                Section("How much percent you're choice?") {
+                    Picker("Select percentage", selection: $tipPercent){
+                        ForEach(tipPercentages, id: \.self) {
+                            Text($0, format: .percent)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
                 Section {
-                    Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(totalPerPerson(), format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
             .navigationTitle("WeSplit")
+            .toolbar() {
+                if amountIsFocused {
+                    Button("Done") {
+                        amountIsFocused = false
+                    }
+                    .backgroundStyle(Color(.red))
+                }
+            }
         }
+        
     }
 }
 
