@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var text = ""
+    let students = ["Rayssa", "Michael", "Joseph"]
+    @State private var selectedItems = "Michael"
     
     var body: some View {
-//      MARK: With binding we can use to read/write a value.
-//      MARK: For use a binding, we can add a $ before state.
-//      MARK: Below we have same example
-        Form {
-            TextField("Describe here", text: $text)
-            Text("My new text: \(text)")
+        
+//        MARK: We can use a ForEach to search an item by index.
+        NavigationStack {
+            Form {
+                Picker("Select an item", selection: $selectedItems) {
+                    ForEach(students, id: \.self) {
+                        Text("\($0)")
+                    }
+                }
+            }
+            .navigationTitle("Selected student:")
         }
     }
 }
