@@ -8,21 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    let students = ["Rayssa", "Michael", "Joseph"]
-    @State private var selectedItems = "Michael"
+    @State private var checkAmount = 0.0
+    @State private var numberOfPeople = 2.0
+    @State private var tipPercent = 20
     
     var body: some View {
-        
-//        MARK: We can use a ForEach to search an item by index.
-        NavigationStack {
-            Form {
-                Picker("Select an item", selection: $selectedItems) {
-                    ForEach(students, id: \.self) {
-                        Text("\($0)")
-                    }
-                }
+        Form {
+            Section {
+                TextField(
+                    "Check amount: ",
+                    value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD")
+                        
+                )
+                .keyboardType(.decimalPad)
             }
-            .navigationTitle("Selected student:")
+            
+            Section {
+                Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            }
         }
     }
 }
