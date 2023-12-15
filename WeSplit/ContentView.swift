@@ -16,12 +16,10 @@ struct ContentView: View {
             Button("Increment"){
                 result += 1
             }
-            .padding(10)
             
             Button("Decrement"){
                 result -= 1
             }
-            .padding(10)
         }
     }
 }
