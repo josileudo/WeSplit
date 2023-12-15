@@ -8,18 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var result = 0
+    @State private var text = ""
     
     var body: some View {
-        VStack {
-            Text("\(result)")
-            Button("Increment"){
-                result += 1
-            }
-            
-            Button("Decrement"){
-                result -= 1
-            }
+//      MARK: With binding we can use to read/write a value.
+//      MARK: For use a binding, we can add a $ before state.
+//      MARK: Below we have same example
+        Form {
+            TextField("Describe here", text: $text)
+            Text("My new text: \(text)")
         }
     }
 }
